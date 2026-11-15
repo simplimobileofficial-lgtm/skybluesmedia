@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071525">
+<title>Sky Blues Media | Coventry City News</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --navy:#071525;
+  --panel:#10243a;
+  --blue:#38a9e9;
+  --light:#78caff;
+  --white:#f7faff;
+  --muted:#a9bfd3;
+  --line:rgba(255,255,255,.12);
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--navy);
+  color:var(--white);
+  font-family:Inter,Arial,sans-serif;
+  line-height:1.7;
+}
+a {color:inherit;text-decoration:none}
+header {
+  min-height:82px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 5%;
+  gap:20px;
+}
+.brand {
+  font-weight:800;
+  font-size:23px;
+  letter-spacing:1px;
+}
+.brand span {color:var(--blue)}
+.tagline {
+  display:block;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--light);
+  margin-top:2px;
+}
+.back {
+  color:var(--light);
+  font-size:13px;
+  font-weight:700;
+}
+.article-wrap {
+  width:min(900px,90%);
+  margin:55px auto 90px;
+}
+.category {
+  color:var(--light);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:15px;
+}
+h1 {
+  font-family:"Barlow Condensed",Impact,sans-serif;
+  font-size:clamp(42px,7vw,76px);
+  line-height:.99;
+  text-transform:uppercase;
+  letter-spacing:-1px;
+  margin:0 0 20px;
+}
+.excerpt {
+  font-size:20px;
+  line-height:1.5;
+  color:#c0d2e3;
+  max-width:760px;
+  margin-bottom:25px;
+}
+.meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  color:var(--muted);
+  font-size:12px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:15px 0;
+  margin-bottom:28px;
+}
+.hero-image {
+  width:100%;
+  max-height:510px;
+  object-fit:cover;
+  display:block;
+  border-radius:5px;
+  background:var(--panel);
+  margin-bottom:35px;
+}
+.story {
+  max-width:740px;
+  margin:auto;
+  font-size:17px;
+  line-height:1.9;
+  color:#e0e9f2;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.story p {margin:0 0 22px}
+.loading,.error {
+  text-align:center;
+  padding:100px 20px;
+  color:var(--muted);
+}
+footer {
+  border-top:1px solid var(--line);
+  padding:30px 5%;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+@media(max-width:600px) {
+  header {padding:15px 5%}
+  .brand {font-size:18px}
+  .article-wrap {margin:35px auto 60px}
+  .excerpt {font-size:17px}
+  .story {font-size:16px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <a href="index.html" class="brand">
+    SKY BLUES <span>MEDIA</span>
+    <span class="tagline">THE HOME OF THE SKY BLUES</span>
+  </a>
+  <a href="index.html#news" class="back">← BACK TO NEWS</a>
+</header>
+
+<main class="article-wrap" id="article">
+  <div class="loading">Loading story...</div>
+</main>
+
+<footer>
+  SKY BLUES MEDIA · THE HOME OF THE SKY BLUES<br>
+  Independent Coventry City supporter media.
+</footer>
+
+<script>
+const SUPABASE_URL = "https://yiskdsqbhpmxrzktfuyi.supabase.co";
+const SUPABASE_KEY = "sb_publishable_M_jmA8cTVwwHIxK1qXCxWg_ysia0w04";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const articleArea = document.getElementById("article");
+
+function addText(tag, className, value, parent) {
+  const element = document.createElement(tag);
+  element.className = className;
+  element.textContent = value || "";
+  parent.appendChild(element);
+  return element;
+}
+
+async function loadArticle() {
+  try {
+    const slug = new URLSearchParams(location.search).get("slug");
+
+    if (!slug) throw new Error("No article was specified.");
+
+    const { data, error } = await db
+      .from("articles")
+      .select("title,slug,excerpt,content,category,image_url,author,published_at,created_at")
+      .eq("slug", slug)
+      .eq("published", true)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) throw new Error("This article could not be found.");
+
+    articleArea.innerHTML = "";
+
+    addText("div", "category", data.category, articleArea);
+    addText("h1", "", data.title, articleArea);
+    addText("p", "excerpt", data.excerpt, articleArea);
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+
+    const date = data.published_at || data.created_at;
+    const formattedDate = date
+      ? new Date(date).toLocaleDateString("en-GB", {
+          day:"numeric",
+          month:"long",
+          year:"numeric"
+        })
+      : "";
+
+    addText("span", "", "BY " + (data.author || "SKY BLUES MEDIA"), meta);
+    if (formattedDate) addText("span", "", formattedDate, meta);
+
+    articleArea.appendChild(meta);
+
+    if (data.image_url) {
+      const image = document.createElement("img");
+      image.className = "hero-image";
+      image.src = data.image_url;
+      image.alt = data.title || "Sky Blues Media article";
+      image.onerror = () => image.remove();
+      articleArea.appendChild(image);
+    }
+
+    const story = document.createElement("div");
+    story.className = "story";
+    story.textContent = data.content || "";
+    articleArea.appendChild(story);
+
+    document.title = data.title + " | Sky Blues Media";
+
+  } catch (error) {
+    console.error("Article loading error:", error);
+    articleArea.innerHTML = "";
+    addText(
+      "div",
+      "error",
+      error.message || "Unable to load this article.",
+      articleArea
+    );
+    addText(
+      "a",
+      "back",
+      "← Return to Coventry City News",
+      articleArea
+    ).href = "index.html#news";
+  }
+}
+
+loadArticle();
+</script>
+</body>
+</html>
