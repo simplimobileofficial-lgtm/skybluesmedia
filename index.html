@@ -282,8 +282,8 @@ footer a:hover{color:var(--blue2)}
     <p>News, updates, interviews and features.</p>
   </div></div>
   <div class="container content-area">
-    <div class="empty"><strong>Newsroom ready for stories</strong>
-      <p>Published articles will appear here once the owner connects the content management system.</p>
+    <div id="newsArticles" class="news-grid">
+  <p class="muted">Loading latest stories...</p>
     </div>
   </div>
 </section>
@@ -527,7 +527,55 @@ async function loadHomepageNews() {
 }
 
 loadHomepageNews();
-  
+  async function loadNewsPage() {
+  const container = document.getElementById("newsArticles");
+  if (!container) return;
+
+  container.innerHTML = '<p class="muted">Loading stories...</p>';
+
+  try {
+    const { data, error } = await db
+      .from("articles")
+      .select("*")
+      .eq("published", true)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      container.innerHTML = '<p class="muted">No published stories yet.</p>';
+      return;
+    }
+
+    container.innerHTML = data.map(article => `
+      <article class="news-card">
+        ${article.image_url ? `
+          <div class="news-image">
+            <img src="${safe(article.image_url)}" alt="">
+          </div>
+        ` : ""}
+        <div class="news-content">
+          <div class="category">${safe(article.category)}</div>
+          <h3>${safe(article.title)}</h3>
+          <p>${safe(article.excerpt)}</p>
+          <details>
+            <summary>READ FULL STORY</summary>
+            <div style="white-space:pre-wrap;margin-top:12px">
+              ${safe(article.content)}
+            </div>
+          </details>
+        </div>
+      </article>
+    `).join("");
+
+  } catch (error) {
+    console.error("News page error:", error);
+    container.innerHTML =
+      '<p class="muted">Unable to load stories. Please try again later.</p>';
+  }
+}
+
+loadNewsPage();
 </script>
 </body>
 </html>
