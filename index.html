@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071525">
+<title>Sky Blues Media | The Home of the Sky Blues</title>
+<meta name="description" content="Independent Coventry City football media. News, match coverage and the Sky Blue community.">
+<style>
+:root {
+  --navy:#071525;
+  --navy2:#0c2036;
+  --blue:#38a9e9;
+  --blue2:#78caff;
+  --white:#f7faff;
+  --muted:#9cabbc;
+  --line:rgba(255,255,255,.11);
+  --panel:#10243a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#081727;color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.container{width:min(1180px,92%);margin:auto}
+.topbar{
+  background:#06111e;border-bottom:1px solid var(--line);
+  color:var(--muted);font-size:12px;padding:8px 0;
+}
+.topbar .container{display:flex;justify-content:space-between;gap:12px}
+header{
+  background:rgba(7,21,37,.97);position:sticky;top:0;z-index:20;
+  border-bottom:1px solid var(--line);backdrop-filter:blur(12px);
+}
+.header-inner{
+  min-height:82px;display:flex;align-items:center;
+  justify-content:space-between;gap:25px;
+}
+.brand{display:flex;align-items:center;gap:12px;min-width:220px}
+.brand-mark{
+  width:43px;height:43px;border:2px solid var(--blue);
+  display:grid;place-items:center;color:var(--blue);
+  font-weight:900;font-size:18px;transform:skew(-7deg);
+}
+.brand-name{font-size:19px;font-weight:900;letter-spacing:1.2px;line-height:1.1}
+.brand-tag{font-size:9px;color:var(--blue2);letter-spacing:2px;margin-top:5px}
+nav{display:flex;align-items:center;gap:21px}
+nav a{font-size:12px;font-weight:700;color:#c3d0df;transition:.2s}
+nav a:hover,nav a.active{color:var(--blue2)}
+.menu-button{
+  display:none;background:none;border:1px solid var(--line);
+  color:white;padding:9px 12px;border-radius:5px;
+}
+.section{display:none;min-height:70vh}
+.section.active{display:block}
+.hero{
+  min-height:490px;display:flex;align-items:end;position:relative;
+  overflow:hidden;background:
+  linear-gradient(90deg,rgba(4,14,26,.98),rgba(4,14,26,.72) 48%,rgba(4,14,26,.15)),
+  linear-gradient(0deg,#071525,transparent 60%),
+  url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85') center 42%/cover;
+}
+.hero-content{padding:75px 0 65px;max-width:720px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  color:var(--blue2);font-size:11px;font-weight:900;
+  letter-spacing:2px;text-transform:uppercase;
+}
+.eyebrow:before{content:"";width:23px;height:2px;background:var(--blue)}
+.hero h1{
+  font-size:clamp(39px,7vw,76px);line-height:.99;
+  letter-spacing:-2px;margin:19px 0;
+  text-transform:uppercase;max-width:700px;
+}
+.hero p{color:#c2d0df;max-width:510px;font-size:15px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:12px 19px;border-radius:3px;font-weight:800;
+  font-size:12px;letter-spacing:.5px;border:1px solid var(--blue);
+}
+.btn.primary{background:var(--blue);color:#061525}
+.btn.secondary{background:rgba(255,255,255,.06);color:white;border-color:var(--line)}
+.section-pad{padding:56px 0}
+.section-heading{
+  display:flex;align-items:end;justify-content:space-between;
+  gap:15px;margin-bottom:25px;
+}
+.section-heading h2{font-size:27px;line-height:1.1}
+.section-heading p{color:var(--muted);font-size:12px;margin-top:7px}
+.text-link{color:var(--blue2);font-size:12px;font-weight:800}
+.news-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:17px}
+.news-card{
+  background:var(--panel);border:1px solid var(--line);
+  overflow:hidden;min-width:0;transition:.2s;
+}
+.news-card:hover{transform:translateY(-4px);border-color:var(--blue)}
+.news-image{height:185px;background:#142b43;position:relative;overflow:hidden}
+.news-image img{width:100%;height:100%;object-fit:cover;display:block}
+.news-image.large{height:235px}
+.news-content{padding:19px}
+.category{font-size:10px;color:var(--blue2);font-weight:900;letter-spacing:1.4px;text-transform:uppercase}
+.news-content h3{font-size:18px;line-height:1.3;margin:9px 0}
+.news-content p{font-size:12px;color:var(--muted)}
+.meta{font-size:10px;color:#8093a9;margin-top:15px}
+.empty{
+  border:1px dashed rgba(120,202,255,.35);
+  background:rgba(16,36,58,.55);padding:35px 25px;
+  text-align:center;border-radius:5px;
+}
+.empty strong{display:block;font-size:17px;margin-bottom:7px}
+.empty p{color:var(--muted);font-size:13px}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.quick-card{
+  background:var(--panel);border:1px solid var(--line);
+  padding:22px;border-radius:4px;
+}
+.quick-card span{color:var(--blue);font-size:22px;font-weight:900}
+.quick-card h3{font-size:14px;margin:8px 0 4px}
+.quick-card p{font-size:11px;color:var(--muted)}
+.page-hero{padding:60px 0 35px;background:linear-gradient(120deg,#102b46,#071525)}
+.page-hero h1{font-size:clamp(32px,5vw,53px);text-transform:uppercase;line-height:1.1}
+.page-hero p{color:var(--muted);margin-top:10px}
+.content-area{padding:38px 0 65px}
+.two-col{display:grid;grid-template-columns:2fr 1fr;gap:25px}
+.panel{background:var(--panel);border:1px solid var(--line);padding:22px}
+.panel h3{margin-bottom:12px}
+.panel p{color:var(--muted);font-size:13px}
+.list-links{display:grid;gap:9px}
+.list-links button{
+  text-align:left;color:#dce8f5;background:#0a1c2e;
+  border:1px solid var(--line);padding:13px;border-radius:3px;
+}
+.list-links button:hover{border-color:var(--blue)}
+footer{background:#050f1b;border-top:1px solid var(--line);padding:42px 0 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+footer h3{font-size:13px;margin-bottom:12px}
+footer p,footer a{font-size:12px;color:var(--muted)}
+footer a:hover{color:var(--blue2)}
+.footer-links{display:grid;gap:7px}
+.copyright{border-top:1px solid var(--line);margin-top:30px;padding-top:17px;color:#71849a;font-size:10px}
+@media(max-width:900px){
+  nav{gap:12px}nav a{font-size:10px}
+  .brand{min-width:180px}.brand-name{font-size:16px}
+}
+@media(max-width:700px){
+  .topbar .container{font-size:10px}
+  .header-inner{min-height:70px}
+  .menu-button{display:block}
+  nav{
+    display:none;position:absolute;top:70px;left:0;right:0;
+    background:#091a2b;padding:17px 5%;border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0;
+  }
+  nav.open{display:flex}
+  nav a{font-size:13px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .hero{min-height:470px}
+  .hero-content{padding:55px 0}
+  .news-grid{grid-template-columns:1fr}
+  .news-image,.news-image.large{height:210px}
+  .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-grid>div:first-child{grid-column:1/-1}
+}
+@media(max-width:390px){
+  .quick-grid{grid-template-columns:1fr}
+  .brand{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container">
+    <span>INDEPENDENT COVENTRY CITY FOOTBALL MEDIA</span>
+    <span>ONE CLUB. ONE CITY. ONE COMMUNITY.</span>
+  </div>
+</div>
+
+<header>
+  <div class="container header-inner">
+    <a href="#home" class="brand" aria-label="Sky Blues Media home">
+      <div class="brand-mark">SB</div>
+      <div>
+        <div class="brand-name">SKY BLUES MEDIA</div>
+        <div class="brand-tag">THE HOME OF THE SKY BLUES</div>
+      </div>
+    </a>
+    <button class="menu-button" id="menuButton" aria-label="Toggle navigation">MENU ☰</button>
+    <nav id="navigation">
+      <a href="#home" class="active">HOME</a>
+      <a href="#news">NEWS</a>
+      <a href="#transfers">TRANSFERS</a>
+      <a href="#fixtures">FIXTURES</a>
+      <a href="#results">RESULTS</a>
+      <a href="#match-centre">MATCH CENTRE</a>
+      <a href="#squad">SQUAD</a>
+      <a href="#more">MORE ▾</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="home" class="section active">
+  <div class="hero">
+    <div class="container hero-content">
+      <div class="eyebrow">COVENTRY CITY · INDEPENDENT COVERAGE</div>
+      <h1>The home of<br>the Sky Blues.</h1>
+      <p>News, matchday coverage, features and stories from across the Sky Blue community.</p>
+      <div class="actions">
+        <a class="btn primary" href="#news">LATEST NEWS</a>
+        <a class="btn secondary" href="#fixtures">FIXTURES & RESULTS</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container section-pad">
+    <div class="section-heading">
+      <div><h2>Latest Headlines</h2><p>Everything happening around Coventry City.</p></div>
+      <a href="#news" class="text-link">ALL NEWS →</a>
+    </div>
+    <div class="news-grid">
+      <article class="news-card">
+        <div class="news-image large">
+          <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=900&q=80" alt="Football stadium">
+        </div>
+        <div class="news-content">
+          <div class="category">WELCOME TO SKY BLUES MEDIA</div>
+          <h3>A new home for independent Coventry City coverage</h3>
+          <p>News, features and matchday stories from the Sky Blue community.</p>
+          <div class="meta">SKY BLUES MEDIA · INTRODUCTION</div>
+        </div>
+      </article>
+      <article class="news-card">
+        <div class="news-image">
+          <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700&q=80" alt="Football pitch">
+        </div>
+        <div class="news-content">
+          <div class="category">MATCHDAY</div>
+          <h3>Your matchday coverage starts here</h3>
+          <p>Previews, reports and reaction in one place.</p>
+          <div class="meta">MATCH COVERAGE</div>
+        </div>
+      </article>
+      <article class="news-card">
+        <div class="news-image">
+          <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=700&q=80" alt="Football in play">
+        </div>
+        <div class="news-content">
+          <div class="category">THE SKY BLUE COMMUNITY</div>
+          <h3>Stories from across the Sky Blue Army</h3>
+          <p>Celebrating the supporters and the city.</p>
+          <div class="meta">COMMUNITY</div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="container section-pad">
+    <div class="section-heading">
+      <div><h2>Match Centre</h2><p>Fixtures, results and match information.</p></div>
+      <a href="#match-centre" class="text-link">MATCH CENTRE →</a>
+    </div>
+    <div class="quick-grid">
+      <a href="#fixtures" class="quick-card"><span>01</span><h3>Fixtures</h3><p>Upcoming Coventry City matches.</p></a>
+      <a href="#results" class="quick-card"><span>02</span><h3>Results</h3><p>Completed matches and scores.</p></a>
+      <a href="#table" class="quick-card"><span>03</span><h3>League Table</h3><p>Competition standings.</p></a>
+      <a href="#match-centre" class="quick-card"><span>04</span><h3>Live Match Centre</h3><p>Match events and statistics.</p></a>
+    </div>
+  </div>
+</section>
+
+<section id="news" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">THE LATEST</div><h1>Coventry City News</h1>
+    <p>News, updates, interviews and features.</p>
+  </div></div>
+  <div class="container content-area">
+    <div class="empty"><strong>Newsroom ready for stories</strong>
+      <p>Published articles will appear here once the owner connects the content management system.</p>
+    </div>
+  </div>
+</section>
+
+<section id="transfers" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">SQUAD BUILDING</div><h1>Transfer Centre</h1>
+    <p>Coventry City transfer news and confirmed movements.</p>
+  </div></div>
+  <div class="container content-area"><div class="empty">
+    <strong>No transfer stories published yet</strong>
+    <p>Only verified updates will be published here. Rumours will be clearly labelled and attributed.</p>
+  </div></div>
+</section>
+
+<section id="fixtures" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">WHAT'S NEXT</div><h1>Fixtures</h1>
+    <p>Upcoming Coventry City matches.</p>
+  </div></div>
+  <div class="container content-area"><div class="empty">
+    <strong>Fixture data not connected</strong>
+    <p>Connect a football data provider to display verified dates, kick-off times and opponents.</p>
+  </div></div>
+</section>
+
+<section id="results" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">FULL TIME</div><h1>Results</h1>
+    <p>Coventry City scores and completed matches.</p>
+  </div></div>
+  <div class="container content-area"><div class="empty">
+    <strong>Results feed awaiting connection</strong>
+    <p>Verified scores will appear here once the football data integration is configured.</p>
+  </div></div>
+</section>
+
+<section id="match-centre" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">FOLLOW THE ACTION</div><h1>Match Centre</h1>
+    <p>Live scores, line-ups, match events and statistics where available.</p>
+  </div></div>
+  <div class="container content-area">
+    <div class="empty"><strong>Match Centre coming online</strong>
+      <p>Live match coverage requires a connected data provider and supported competition feed.</p>
+    </div>
+  </div>
+</section>
+
+<section id="table" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">THE CAMPAIGN</div><h1>League Table</h1>
+    <p>Competition standings and Coventry City's position.</p>
+  </div></div>
+  <div class="container content-area"><div class="empty">
+    <strong>League table awaiting data</strong>
+    <p>Official standings will be displayed after the data connection is configured.</p>
+  </div></div>
+</section>
+
+<section id="squad" class="section">
+  <div class="page-hero"><div class="container">
+    <div class="eyebrow">THE PLAYING SQUAD</div><h1>First Team Squad</h1>
+    <p>Player profiles, positions and statistics.</p>
+  </div></div>
+  <div class="container content-area">
+    <div class="empty"><strong>Squad profiles awaiting verification</strong>
+      <p>The owner can add the current squad and academy players, with verified profile information and photographs.</p>
+    </div>
+  </div>
+</section>
+
+<section id="academy" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">THE NEXT GENERATION</div><h1>Academy</h1><p>Young Sky Blues and academy coverage.</p></div></div>
+  <div class="container content-area"><div class="empty"><strong>Academy coverage coming soon</strong><p>Updates and profiles will be added here.</p></div></div>
+</section>
+
+<section id="gallery" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">BEHIND THE BADGE</div><h1>Gallery</h1><p>Matchday atmosphere and Sky Blue moments.</p></div></div>
+  <div class="container content-area"><div class="empty"><strong>Gallery awaiting photographs</strong><p>Images will be added by the website owner.</p></div></div>
+</section>
+
+<section id="community" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">ONE CLUB. ONE CITY.</div><h1>Community</h1><p>A place for the Sky Blue community.</p></div></div>
+  <div class="container content-area"><div class="empty"><strong>Community features coming soon</strong><p>Supporter features and community stories will appear here.</p></div></div>
+</section>
+
+<section id="about" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">OUR STORY</div><h1>About Us</h1><p>Independent coverage. One Sky Blue community.</p></div></div>
+  <div class="container content-area two-col">
+    <div class="panel">
+      <h3>The Home of the Sky Blues.</h3>
+      <p>Sky Blues Media is an independent Coventry City football media platform built around a shared passion for the club, its history and its supporters.</p>
+      <br>
+      <p>We bring the Sky Blue community closer to the action through news, transfer updates, match previews, matchday coverage, results and features. Our aim is to deliver engaging, reliable and professional football coverage while celebrating everything that makes Coventry City special.</p>
+      <br>
+      <p>From the stands at the CBS Arena to supporters around the world, we are here to connect fans and share the stories that matter.</p>
+      <br><strong>One club. One city. One community.</strong>
+    </div>
+    <div class="panel"><h3>Our identity</h3><p>Independent football media. Coventry City focus. Supporter community.</p></div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">GET IN TOUCH</div><h1>Contact</h1><p>Have a story, question or media enquiry?</p></div></div>
+  <div class="container content-area"><div class="empty"><strong>Contact details to be added</strong><p>The owner can add an official email address and social media links before launch.</p></div></div>
+</section>
+
+<section id="more" class="section">
+  <div class="page-hero"><div class="container"><div class="eyebrow">EXPLORE</div><h1>More from Sky Blues Media</h1><p>More coverage from across the club and its community.</p></div></div>
+  <div class="container content-area">
+    <div class="list-links">
+      <button onclick="go('academy')">Academy →</button>
+      <button onclick="go('gallery')">Gallery →</button>
+      <button onclick="go('community')">Community →</button>
+      <button onclick="go('table')">League Table →</button>
+      <button onclick="go('about')">About Us →</button>
+      <button onclick="go('contact')">Contact →</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand">
+          <div class="brand-mark">SB</div>
+          <div><div class="brand-name">SKY BLUES MEDIA</div><div class="brand-tag">THE HOME OF THE SKY BLUES</div></div>
+        </div>
+        <p style="margin-top:15px;max-width:330px">Independent Coventry City football media. One club. One city. One community.</p>
+      </div>
+      <div><h3>EXPLORE</h3><div class="footer-links">
+        <a href="#news">Latest News</a><a href="#transfers">Transfers</a><a href="#fixtures">Fixtures</a><a href="#results">Results</a><a href="#squad">Squad</a>
+      </div></div>
+      <div><h3>SKY BLUES MEDIA</h3><div class="footer-links">
+        <a href="#about">About Us</a><a href="#community">Community</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
+      </div></div>
+    </div>
+    <div class="copyright">© <span id="year"></span> Sky Blues Media. Independent supporter media. Not affiliated with Coventry City Football Club.</div>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('navigation');
+const menuButton = document.getElementById('menuButton');
+
+function go(id){
+  const target = document.getElementById(id);
+  if(!target) return;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  target.classList.add('active');
+  document.querySelectorAll('nav a').forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+id);
+  });
+  nav.classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(link=>{
+  link.addEventListener('click',event=>{
+    const id=link.getAttribute('href').slice(1);
+    if(document.getElementById(id)){
+      event.preventDefault();
+      history.replaceState(null,'','#'+id);
+      go(id);
+    }
+  });
+});
+
+menuButton.addEventListener('click',()=>nav.classList.toggle('open'));
+document.getElementById('year').textContent=new Date().getFullYear();
+
+const initial=location.hash.slice(1);
+if(initial && document.getElementById(initial)) go(initial);
+</script>
+</body>
+</html>
