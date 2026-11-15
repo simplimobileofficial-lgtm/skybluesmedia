@@ -7,6 +7,116 @@
 <meta name="theme-color" content="#071525">
 <title>Sky Blues Media | The Home of the Sky Blues</title>
 <meta name="description" content="Independent Coventry City football media. News, match coverage and the Sky Blue community.">
+
+/* SKY BLUES MEDIA EDITORIAL UPGRADE */
+
+.breaking-strip {
+  background: #10243a;
+  border-top: 1px solid rgba(120,202,255,.2);
+  border-bottom: 1px solid rgba(120,202,255,.2);
+  padding: 13px 0;
+}
+.breaking-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.breaking-label {
+  background: #38a9e9;
+  color: #071525;
+  padding: 5px 10px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+}
+.breaking-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f7faff;
+}
+.featured-layout {
+  display: grid;
+  grid-template-columns: 1.65fr 1fr;
+  gap: 20px;
+}
+.featured-story {
+  position: relative;
+  min-height: 390px;
+  display: flex;
+  align-items: end;
+  overflow: hidden;
+  background: #10243a;
+  border: 1px solid var(--line);
+}
+.featured-story img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.featured-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg,rgba(3,12,23,.98),rgba(3,12,23,.05) 85%);
+}
+.featured-copy {
+  position: relative;
+  z-index: 2;
+  padding: 30px;
+}
+.featured-copy h2 {
+  font-size: clamp(27px,4vw,43px);
+  line-height: 1.05;
+  margin: 12px 0;
+  text-transform: uppercase;
+}
+.featured-copy p {
+  color: #d0dce8;
+  font-size: 13px;
+  max-width: 550px;
+}
+.featured-copy .text-link {
+  display: inline-block;
+  margin-top: 17px;
+}
+.editorial-side {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.editorial-note {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 20px;
+}
+.editorial-note h3 {
+  font-size: 17px;
+  margin: 8px 0;
+}
+.editorial-note p {
+  color: var(--muted);
+  font-size: 12px;
+}
+.news-card .read-story {
+  display: inline-block;
+  color: var(--blue2);
+  font-size: 11px;
+  font-weight: 900;
+  margin-top: 15px;
+  letter-spacing: .5px;
+}
+.news-card .read-story:hover {
+  color: white;
+}
+@media(max-width:700px) {
+  .featured-layout {grid-template-columns:1fr}
+  .featured-story {min-height:340px}
+  .featured-copy {padding:20px}
+  .breaking-inner {gap:9px}
+}
+
 <style>
 :root {
   --navy:#071525;
@@ -207,12 +317,14 @@ footer a:hover{color:var(--blue2)}
 </header>
 
 <main>
+
 <section id="home" class="section active">
+
   <div class="hero">
     <div class="container hero-content">
       <div class="eyebrow">COVENTRY CITY · INDEPENDENT COVERAGE</div>
       <h1>The home of<br>the Sky Blues.</h1>
-      <p>News, matchday coverage, features and stories from across the Sky Blue community.</p>
+      <p>Breaking news, matchday coverage and the stories that matter to the Sky Blue community.</p>
       <div class="actions">
         <a class="btn primary" href="#news">LATEST NEWS</a>
         <a class="btn secondary" href="#fixtures">FIXTURES & RESULTS</a>
@@ -220,140 +332,134 @@ footer a:hover{color:var(--blue2)}
     </div>
   </div>
 
+  <div class="breaking-strip">
+    <div class="container breaking-inner">
+      <span class="breaking-label">LATEST UPDATE</span>
+      <span class="breaking-text" id="breakingHeadline">
+        Your independent Coventry City news source.
+      </span>
+      <a href="#news" class="text-link">READ NEWS →</a>
+    </div>
+  </div>
+
   <div class="container section-pad">
     <div class="section-heading">
-      <div><h2>Latest Headlines</h2><p>Everything happening around Coventry City.</p></div>
+      <div>
+        <div class="eyebrow">THE BIG STORY</div>
+        <h2>Featured Coverage</h2>
+        <p>The latest headline from Sky Blues Media.</p>
+      </div>
       <a href="#news" class="text-link">ALL NEWS →</a>
     </div>
-    <div class="news-grid">
-      <article class="news-card">
-        <div class="news-image large">
-          <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=900&q=80" alt="Football stadium">
+
+    <div class="featured-layout">
+      <div id="featuredStory">
+        <div class="empty">
+          <strong>Loading featured coverage...</strong>
+          <p>Our latest published story will appear here.</p>
         </div>
-        <div class="news-content">
-          <div class="category">WELCOME TO SKY BLUES MEDIA</div>
-          <h3>A new home for independent Coventry City coverage</h3>
-          <p>News, features and matchday stories from the Sky Blue community.</p>
-          <div class="meta">SKY BLUES MEDIA · INTRODUCTION</div>
+      </div>
+
+      <div class="editorial-side">
+        <div class="editorial-note">
+          <div class="category">OUR COVERAGE</div>
+          <h3>Closer to the Sky Blues</h3>
+          <p>Independent Coventry City reporting, features and matchday coverage.</p>
         </div>
-      </article>
-      <article class="news-card">
-        <div class="news-image">
-          <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700&q=80" alt="Football pitch">
-        </div>
-        <div class="news-content">
+        <div class="editorial-note">
           <div class="category">MATCHDAY</div>
-          <h3>Your matchday coverage starts here</h3>
-          <p>Previews, reports and reaction in one place.</p>
-          <div class="meta">MATCH COVERAGE</div>
+          <h3>Every match. Every moment.</h3>
+          <p>Follow fixtures, results and coverage throughout the campaign.</p>
+          <a href="#match-centre" class="text-link">VISIT MATCH CENTRE →</a>
         </div>
-      </article>
-      <article class="news-card">
-        <div class="news-image">
-          <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=700&q=80" alt="Football in play">
+        <div class="editorial-note">
+          <div class="category">THE COMMUNITY</div>
+          <h3>One club. One city.</h3>
+          <p>Stories celebrating Coventry City and its supporters.</p>
         </div>
-        <div class="news-content">
-          <div class="category">THE SKY BLUE COMMUNITY</div>
-          <h3>Stories from across the Sky Blue Army</h3>
-          <p>Celebrating the supporters and the city.</p>
-          <div class="meta">COMMUNITY</div>
-        </div>
-      </article>
+      </div>
     </div>
   </div>
 
   <div class="container section-pad">
     <div class="section-heading">
-      <div><h2>Match Centre</h2><p>Fixtures, results and match information.</p></div>
+      <div>
+        <div class="eyebrow">LATEST STORIES</div>
+        <h2>Latest Headlines</h2>
+        <p>News and features from across Coventry City.</p>
+      </div>
+      <a href="#news" class="text-link">VIEW ALL →</a>
+    </div>
+
+    <div class="news-grid" id="homepageLatestNews">
+      <div class="empty">
+        <strong>Loading latest stories...</strong>
+        <p>Published articles will appear here.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container section-pad">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">FOLLOW THE SKY BLUES</div>
+        <h2>Match Centre</h2>
+        <p>Everything you need to follow Coventry City.</p>
+      </div>
       <a href="#match-centre" class="text-link">MATCH CENTRE →</a>
     </div>
+
     <div class="quick-grid">
-      <a href="#fixtures" class="quick-card"><span>01</span><h3>Fixtures</h3><p>Upcoming Coventry City matches.</p></a>
-      <a href="#results" class="quick-card"><span>02</span><h3>Results</h3><p>Completed matches and scores.</p></a>
-      <a href="#table" class="quick-card"><span>03</span><h3>League Table</h3><p>Competition standings.</p></a>
-      <a href="#match-centre" class="quick-card"><span>04</span><h3>Live Match Centre</h3><p>Match events and statistics.</p></a>
+      <a href="#fixtures" class="quick-card">
+        <span>01</span>
+        <h3>Fixtures</h3>
+        <p>Upcoming Coventry City matches.</p>
+      </a>
+      <a href="#results" class="quick-card">
+        <span>02</span>
+        <h3>Results</h3>
+        <p>Completed matches and scores.</p>
+      </a>
+      <a href="#table" class="quick-card">
+        <span>03</span>
+        <h3>League Table</h3>
+        <p>Competition standings.</p>
+      </a>
+      <a href="#match-centre" class="quick-card">
+        <span>04</span>
+        <h3>Match Centre</h3>
+        <p>Match events and statistics.</p>
+      </a>
     </div>
   </div>
-</section>
 
-<section id="news" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">THE LATEST</div><h1>Coventry City News</h1>
-    <p>News, updates, interviews and features.</p>
-  </div></div>
-  <div class="container content-area">
-    <div id="newsArticles" class="news-grid">
-  <p class="muted">Loading latest stories...</p>
+  <div class="container section-pad">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">MORE FROM THE CLUB</div>
+        <h2>Explore Sky Blues Media</h2>
+      </div>
+    </div>
+    <div class="quick-grid">
+      <a href="#transfers" class="quick-card">
+        <span>05</span><h3>Transfer Centre</h3>
+        <p>Transfer news and confirmed movements.</p>
+      </a>
+      <a href="#squad" class="quick-card">
+        <span>06</span><h3>First Team</h3>
+        <p>Player profiles and squad information.</p>
+      </a>
+      <a href="#academy" class="quick-card">
+        <span>07</span><h3>Academy</h3>
+        <p>The next generation of Sky Blues.</p>
+      </a>
+      <a href="#community" class="quick-card">
+        <span>08</span><h3>Community</h3>
+        <p>Stories from the Sky Blue family.</p>
+      </a>
     </div>
   </div>
-</section>
-
-<section id="transfers" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">SQUAD BUILDING</div><h1>Transfer Centre</h1>
-    <p>Coventry City transfer news and confirmed movements.</p>
-  </div></div>
-  <div class="container content-area"><div class="empty">
-    <strong>No transfer stories published yet</strong>
-    <p>Only verified updates will be published here. Rumours will be clearly labelled and attributed.</p>
-  </div></div>
-</section>
-
-<section id="fixtures" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">WHAT'S NEXT</div><h1>Fixtures</h1>
-    <p>Upcoming Coventry City matches.</p>
-  </div></div>
-  <div class="container content-area"><div class="empty">
-    <strong>Fixture data not connected</strong>
-    <p>Connect a football data provider to display verified dates, kick-off times and opponents.</p>
-  </div></div>
-</section>
-
-<section id="results" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">FULL TIME</div><h1>Results</h1>
-    <p>Coventry City scores and completed matches.</p>
-  </div></div>
-  <div class="container content-area"><div class="empty">
-    <strong>Results feed awaiting connection</strong>
-    <p>Verified scores will appear here once the football data integration is configured.</p>
-  </div></div>
-</section>
-
-<section id="match-centre" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">FOLLOW THE ACTION</div><h1>Match Centre</h1>
-    <p>Live scores, line-ups, match events and statistics where available.</p>
-  </div></div>
-  <div class="container content-area">
-    <div class="empty"><strong>Match Centre coming online</strong>
-      <p>Live match coverage requires a connected data provider and supported competition feed.</p>
-    </div>
-  </div>
-</section>
-
-<section id="table" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">THE CAMPAIGN</div><h1>League Table</h1>
-    <p>Competition standings and Coventry City's position.</p>
-  </div></div>
-  <div class="container content-area"><div class="empty">
-    <strong>League table awaiting data</strong>
-    <p>Official standings will be displayed after the data connection is configured.</p>
-  </div></div>
-</section>
-
-<section id="squad" class="section">
-  <div class="page-hero"><div class="container">
-    <div class="eyebrow">THE PLAYING SQUAD</div><h1>First Team Squad</h1>
-    <p>Player profiles, positions and statistics.</p>
-  </div></div>
-  <div class="container content-area">
-    <div class="empty"><strong>Squad profiles awaiting verification</strong>
-      <p>The owner can add the current squad and academy players, with verified profile information and photographs.</p>
-    </div>
-  </div>
+  
 </section>
 
 <section id="academy" class="section">
@@ -464,7 +570,101 @@ if(initial && document.getElementById(initial)) go(initial);
 const SUPABASE_URL = "https://yiskdsqbhpmxrzktfuyi.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M_jmA8cTVwwHIxK1qXCxWg_ysia0w04";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 async function loadHomepageNews() {
+  const featured = document.getElementById("featuredStory");
+  const latest = document.getElementById("homepageLatestNews");
+  const breaking = document.getElementById("breakingHeadline");
+
+  const safe = value => String(value ?? "").replace(
+    /[&<>"']/g,
+    char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]
+  );
+
+  try {
+    const { data, error } = await db
+      .from("articles")
+      .select("title,slug,excerpt,category,image_url,author,published_at,created_at")
+      .eq("published", true)
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false })
+      .limit(7);
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      featured.innerHTML = '<div class="empty"><strong>No featured story yet</strong><p>Publish your first article through the admin dashboard.</p></div>';
+      latest.innerHTML = '<div class="empty"><strong>No published stories yet</strong><p>New stories will appear here.</p></div>';
+      return;
+    }
+
+    const first = data[0];
+
+    if (breaking) {
+      breaking.textContent = first.title;
+    }
+
+    const image = /^https?:\/\//i.test(first.image_url || "")
+      ? `<img src="${safe(first.image_url)}" alt="${safe(first.title)}">`
+      : "";
+
+    featured.innerHTML = `
+      <article class="featured-story">
+        ${image}
+        <div class="featured-overlay"></div>
+        <div class="featured-copy">
+          <div class="category">${safe(first.category || "COVENTRY CITY")}</div>
+          <h2>${safe(first.title)}</h2>
+          <p>${safe(first.excerpt)}</p>
+          <a class="text-link" target="_blank" rel="noopener noreferrer"
+             href="article.html?slug=${encodeURIComponent(first.slug)}">
+            READ FULL STORY →
+          </a>
+        </div>
+      </article>
+    `;
+
+    const remaining = data.slice(1);
+
+    if (!remaining.length) {
+      latest.innerHTML = '<p class="muted">More stories coming soon.</p>';
+      return;
+    }
+
+    latest.innerHTML = remaining.map(article => {
+      const storyImage = /^https?:\/\//i.test(article.image_url || "")
+        ? `<div class="news-image"><img src="${safe(article.image_url)}" alt="${safe(article.title)}"></div>`
+        : `<div class="news-image"></div>`;
+
+      return `
+        <article class="news-card">
+          ${storyImage}
+          <div class="news-content">
+            <div class="category">${safe(article.category || "NEWS")}</div>
+            <h3>${safe(article.title)}</h3>
+            <p>${safe(article.excerpt)}</p>
+            <a class="read-story" target="_blank" rel="noopener noreferrer"
+               href="article.html?slug=${encodeURIComponent(article.slug)}">
+              READ FULL STORY →
+            </a>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error("Homepage newsroom error:", error);
+    featured.innerHTML = '<div class="empty"><strong>Featured story unavailable</strong><p>Please try again shortly.</p></div>';
+    latest.innerHTML = '<p>Latest stories could not be loaded.</p>';
+  }
+}
+
   const grid = document.querySelector(".news-grid");
   if (!grid) return;
 
