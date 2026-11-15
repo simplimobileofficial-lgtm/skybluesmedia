@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sky Blues Media | Owner Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#061321;color:#f5f8fc;font-family:Arial,sans-serif}
+header{background:#091b2d;border-bottom:1px solid #20364b;padding:22px 5%;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:23px;font-weight:900;letter-spacing:1px}
+.brand span{color:#35b8f2}
+button{background:#35b8f2;color:#061321;border:0;padding:12px 18px;border-radius:5px;font-weight:800;cursor:pointer}
+button.secondary{background:#20364b;color:white}
+button.danger{background:#a83242;color:white}
+main{max-width:1100px;margin:35px auto;padding:0 20px}
+.panel{background:#0c2033;border:1px solid #20364b;border-radius:9px;padding:24px;margin-bottom:22px}
+h1{font-size:30px;margin:0 0 8px}
+h2{font-size:21px;margin-top:0}
+.muted{color:#9eb4c8}
+input,textarea,select{width:100%;padding:13px;margin:8px 0 17px;background:#071625;border:1px solid #29445c;border-radius:5px;color:white;font:inherit}
+textarea{min-height:150px;resize:vertical}
+label{font-size:13px;font-weight:bold;color:#b9d3e8}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.article{padding:17px 0;border-bottom:1px solid #20364b}
+.article:last-child{border:0}
+.article h3{margin:0 0 7px}
+.status{color:#49c5ff;font-size:12px;font-weight:bold;text-transform:uppercase}
+.hidden{display:none!important}
+#message{margin:12px 0;color:#55c8ff}
+@media(max-width:600px){header{padding:17px}.brand{font-size:17px}main{margin:20px auto}.panel{padding:17px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">SKY BLUES <span>MEDIA</span></div>
+  <button id="logout" class="secondary hidden">Sign out</button>
+</header>
+
+<main>
+  <section id="loginPanel" class="panel">
+    <h1>Owner Login</h1>
+    <p class="muted">Sky Blues Media private administration.</p>
+    <form id="loginForm">
+      <label>Email address</label>
+      <input id="email" type="email" required autocomplete="username">
+      <label>Password</label>
+      <input id="password" type="password" required autocomplete="current-password">
+      <button type="submit">Sign in</button>
+    </form>
+    <p id="loginMessage"></p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="panel">
+      <p class="status">OWNER CONTROL CENTRE</p>
+      <h1>Welcome to your newsroom.</h1>
+      <p class="muted">Manage Sky Blues Media articles and publishing.</p>
+    </div>
+
+    <div class="panel">
+      <h2 id="formHeading">Create an article</h2>
+      <form id="articleForm">
+        <input id="articleId" type="hidden">
+        <label>Article headline</label>
+        <input id="title" required placeholder="Enter headline">
+        <label>URL slug</label>
+        <input id="slug" required placeholder="article-headline">
+        <label>Short introduction</label>
+        <textarea id="excerpt" placeholder="Article summary"></textarea>
+        <label>Article content</label>
+        <textarea id="content" placeholder="Write your article..." required></textarea>
+        <label>Category</label>
+        <select id="category">
+          <option>News</option>
+          <option>Transfers</option>
+          <option>Match Reports</option>
+          <option>Features</option>
+          <option>Academy</option>
+          <option>Interviews</option>
+        </select>
+        <label>Featured image URL</label>
+        <input id="image" type="url" placeholder="https://...">
+        <div class="row">
+          <button type="submit" id="saveButton">Publish article</button>
+          <button type="button" class="secondary hidden" id="cancelEdit">Cancel edit</button>
+        </div>
+        <p id="formMessage"></p>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>Newsroom</h2>
+      <p class="muted">Your saved articles.</p>
+      <div id="articles"><p class="muted">Loading articles...</p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const SUPABASE_URL = "https://yiskdsqbhpmxrzktfuyi.supabase.co";
+const SUPABASE_KEY = "sb_publishable_M_jmA8cTVwwHIxK1qXCxWg_ysia0w04";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = id => document.getElementById(id);
+
+function message(id,text){$(id).textContent=text;}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function makeSlug(value){
+  return value.toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
+
+$("title").addEventListener("input",()=>{
+  if(!$("articleId").value) $("slug").value=makeSlug($("title").value);
+});
+
+async function checkOwner(){
+  const {data:{session}}=await db.auth.getSession();
+
+  if(!session){
+    showLogin();
+    return;
+  }
+
+  const {data,error}=await db.rpc("is_site_owner");
+
+  if(error || data!==true){
+    await db.auth.signOut();
+    showLogin();
+    message("loginMessage","This account is not authorised to access the owner dashboard.");
+    return;
+  }
+
+  $("loginPanel").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  $("logout").classList.remove("hidden");
+  loadArticles();
+}
+
+function showLogin(){
+  $("dashboard").classList.add("hidden");
+  $("loginPanel").classList.remove("hidden");
+  $("logout").classList.add("hidden");
+}
+
+$("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  message("loginMessage","Signing in...");
+
+  const {error}=await db.auth.signInWithPassword({
+    email:$("email").value.trim(),
+    password:$("password").value
+  });
+
+  if(error){
+    message("loginMessage",error.message);
+    return;
+  }
+
+  message("loginMessage","");
+  await checkOwner();
+});
+
+$("logout").addEventListener("click",async()=>{
+  await db.auth.signOut();
+  showLogin();
+});
+
+async function loadArticles(){
+  $("articles").innerHTML="<p class='muted'>Loading...</p>";
+
+  const {data,error}=await db.from("articles")
+    .select("*").order("created_at",{ascending:false});
+
+  if(error){
+    $("articles").textContent=error.message;
+    return;
+  }
+
+  if(!data.length){
+    $("articles").innerHTML="<p class='muted'>No articles yet. Create your first story above.</p>";
+    return;
+  }
+
+  $("articles").innerHTML=data.map(article=>`
+    <div class="article">
+      <span class="status">${article.published?"Published":"Draft"}</span>
+      <h3>${escapeHTML(article.title)}</h3>
+      <p class="muted">${escapeHTML(article.category)} · ${escapeHTML(article.slug)}</p>
+      <div class="row">
+        <button class="secondary" onclick="editArticle('${article.id}')">Edit</button>
+        <button class="danger" onclick="deleteArticle('${article.id}')">Delete</button>
+      </div>
+    </div>
+  `).join("");
+
+  window.articleCache=data;
+}
+
+window.editArticle=id=>{
+  const article=window.articleCache.find(item=>item.id===id);
+  if(!article)return;
+
+  $("articleId").value=article.id;
+  $("title").value=article.title;
+  $("slug").value=article.slug;
+  $("excerpt").value=article.excerpt||"";
+  $("content").value=article.content||"";
+  $("category").value=article.category||"News";
+  $("image").value=article.image_url||"";
+  $("formHeading").textContent="Edit article";
+  $("saveButton").textContent="Update article";
+  $("cancelEdit").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+
+function resetForm(){
+  $("articleForm").reset();
+  $("articleId").value="";
+  $("formHeading").textContent="Create an article";
+  $("saveButton").textContent="Publish article";
+  $("cancelEdit").classList.add("hidden");
+}
+
+$("cancelEdit").addEventListener("click",resetForm);
+
+$("articleForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  message("formMessage","Saving article...");
+
+  const id=$("articleId").value;
+  const article={
+    title:$("title").value.trim(),
+    slug:makeSlug($("slug").value),
+    excerpt:$("excerpt").value.trim(),
+    content:$("content").value.trim(),
+    category:$("category").value,
+    image_url:$("image").value.trim()||null,
+    author:"Sky Blues Media",
+    published:true,
+    published_at:new Date().toISOString(),
+    updated_at:new Date().toISOString()
+  };
+
+  const result=id
+    ? await db.from("articles").update(article).eq("id",id)
+    : await db.from("articles").insert(article);
+
+  if(result.error){
+    message("formMessage",result.error.message);
+    return;
+  }
+
+  message("formMessage","Article saved successfully.");
+  resetForm();
+  await loadArticles();
+});
+
+window.deleteArticle=async id=>{
+  if(!confirm("Delete this article permanently?"))return;
+
+  const {error}=await db.from("articles").delete().eq("id",id);
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  loadArticles();
+};
+
+db.auth.onAuthStateChange(()=>{
+  setTimeout(checkOwner,0);
+});
+
+checkOwner();
+</script>
+</body>
+</html>
