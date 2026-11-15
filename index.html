@@ -568,11 +568,10 @@ loadHomepageNews();
       </article>
     `).join("");
 
-  } catch (error) {
-    console.error("News page error:", error);
-    container.innerHTML =
-      '<p class="muted">Unable to load stories. Please try again later.</p>';
-  }
+} catch (error) {
+  console.error("News page error:", error);
+  container.textContent = "News error: " + error.message;
+}
 }
 
 loadNewsPage();
