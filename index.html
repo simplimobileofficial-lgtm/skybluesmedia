@@ -427,7 +427,7 @@ footer a:hover{color:var(--blue2)}
     <div class="copyright">© <span id="year"></span> Sky Blues Media. Independent supporter media. Not affiliated with Coventry City Football Club.</div>
   </div>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const nav = document.getElementById('navigation');
 const menuButton = document.getElementById('menuButton');
@@ -463,7 +463,7 @@ if(initial && document.getElementById(initial)) go(initial);
 
 const SUPABASE_URL = "https://yiskdsqbhpmxrzktfuyi.supabase.co";
 const SUPABASE_KEY = "sb_publishable_M_jmA8cTVwwHIxK1qXCxWg_ysia0w04";
-
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 async function loadHomepageNews() {
   const grid = document.querySelector(".news-grid");
   if (!grid) return;
