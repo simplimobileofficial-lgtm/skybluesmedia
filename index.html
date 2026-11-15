@@ -541,7 +541,16 @@ loadHomepageNews();
   if (!container) return;
 
   container.innerHTML = '<p class="muted">Loading stories...</p>';
-
+const safe = value => String(value ?? "").replace(
+  /[&<>"']/g,
+  char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]
+);
   try {
     const { data, error } = await db
       .from("articles")
