@@ -579,12 +579,13 @@ const safe = value => String(value ?? "").replace(
           <div class="category">${safe(article.category)}</div>
           <h3>${safe(article.title)}</h3>
           <p>${safe(article.excerpt)}</p>
-          <details>
-            <summary>READ FULL STORY</summary>
-            <div style="white-space:pre-wrap;margin-top:12px">
-              ${safe(article.content)}
-            </div>
-          </details>
+         <a
+  href="article.html?slug=${encodeURIComponent(article.slug)}"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="read-story">
+  READ FULL STORY →
+</a>
         </div>
       </article>
     `).join("");
