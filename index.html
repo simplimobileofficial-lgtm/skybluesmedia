@@ -499,7 +499,16 @@ async function loadHomepageNews() {
       })[char]
     );
 
-    grid.innerHTML = articles.map(article => {
+    grid.innerHTML = articles.map(article => {const safe = value => String(value ?? "").replace(
+  /[&<>"']/g,
+  char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]
+);
       const image = /^https?:\/\//i.test(article.image_url || "")
         ? `<img src="${safe(article.image_url)}" alt="${safe(article.title)}">`
         : "";
